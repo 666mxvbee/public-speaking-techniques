@@ -49,13 +49,18 @@
                 <div class="flex-shrink-0 flex items-center">
                     <span class="text-xl font-bold text-indigo-600">Твой Старт в IT</span>
                 </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="#why" class="nav-link text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">Почему IT?</a>
-                        <a href="#roles" class="nav-link text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">Найди себя</a>
-                        <a href="#steps" class="nav-link text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">Первые шаги</a>
-                        <a href="#market" class="nav-link text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">Рынок</a>
+                <div class="flex items-center space-x-4">
+                    <div class="hidden md:block">
+                        <div class="flex items-baseline space-x-4">
+                            <a href="#why" class="nav-link text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">Почему IT?</a>
+                            <a href="#roles" class="nav-link text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">Найди себя</a>
+                            <a href="#steps" class="nav-link text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">Первые шаги</a>
+                            <a href="#market" class="nav-link text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">Рынок</a>
+                        </div>
                     </div>
+                    <button id="autoScrollButton" class="bg-indigo-500 text-white text-xs font-semibold py-2 px-4 rounded-full hover:bg-indigo-600 transition duration-300 shadow-md">
+                        Запустить Авто-тур
+                    </button>
                 </div>
             </div>
         </div>
@@ -201,9 +206,22 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
+            const nav = document.getElementById('navbar');
+            const autoScrollButton = document.getElementById('autoScrollButton');
+            let scrollAnimationId = null;
+
             document.querySelectorAll('a.nav-link').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault();
+
+                    if (scrollAnimationId) {
+                        cancelAnimationFrame(scrollAnimationId);
+                        scrollAnimationId = null;
+                        autoScrollButton.textContent = 'Запустить Авто-тур (4 мин)';
+                        autoScrollButton.classList.remove('bg-red-500', 'hover:bg-red-600');
+                        autoScrollButton.classList.add('bg-indigo-500', 'hover:bg-indigo-600');
+                    }
+
                     const targetId = this.getAttribute('href');
                     const targetElement = document.querySelector(targetId);
                     if (targetElement) {
@@ -215,7 +233,6 @@
                 });
             });
 
-            const nav = document.getElementById('navbar');
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 10) {
                     nav.classList.add('shadow-lg');
@@ -223,6 +240,64 @@
                     nav.classList.remove('shadow-lg');
                 }
             });
+
+
+            autoScrollButton.addEventListener('click', () => {
+                if (scrollAnimationId) {
+                    cancelAnimationFrame(scrollAnimationId);
+                    scrollAnimationId = null;
+                    autoScrollButton.textContent = 'Запустить Авто-тур (4 мин)';
+                    autoScrollButton.classList.remove('bg-red-500', 'hover:bg-red-600');
+                    autoScrollButton.classList.add('bg-indigo-500', 'hover:bg-indigo-600');
+                } else {
+                    startAutoScroll();
+                    autoScrollButton.textContent = 'Остановить Авто-тур';
+                    autoScrollButton.classList.remove('bg-indigo-500', 'hover:bg-indigo-600');
+                    autoScrollButton.classList.add('bg-red-500', 'hover:bg-red-600');
+                }
+            });
+
+            function startAutoScroll() {
+                const DURATION = 240000;
+                const startPosition = window.scrollY;
+                const targetPosition = document.documentElement.scrollHeight - window.innerHeight;
+                const distance = targetPosition - startPosition;
+                let startTime = null;
+
+                if (distance <= 0) {
+                    autoScrollButton.textContent = 'Запустить Авто-тур (4 мин)';
+                    autoScrollButton.classList.remove('bg-red-500', 'hover:bg-red-600');
+                    autoScrollButton.classList.add('bg-indigo-500', 'hover:bg-indigo-600');
+                    return;
+                }
+
+                function animateScroll(currentTime) {
+                    if (startTime === null) startTime = currentTime;
+
+                    const timeElapsed = currentTime - startTime;
+                    const progress = Math.min(timeElapsed / DURATION, 1); // Прогресс от 0 до 1
+
+                    const newScrollY = startPosition + distance * progress;
+
+                    window.scrollTo(0, newScrollY);
+
+                    if (progress < 1) {
+                        scrollAnimationId = requestAnimationFrame(animateScroll);
+                    } else {
+                        scrollAnimationId = null;
+                        autoScrollButton.textContent = 'Авто-тур завершен';
+                        autoScrollButton.classList.remove('bg-red-500', 'hover:bg-red-600');
+                        autoScrollButton.classList.add('bg-gray-400', 'cursor-not-allowed');
+                        setTimeout(() => {
+                           autoScrollButton.textContent = 'Запустить Авто-тур (4 мин)';
+                           autoScrollButton.classList.remove('bg-gray-400', 'cursor-not-allowed');
+                           autoScrollButton.classList.add('bg-indigo-500', 'hover:bg-indigo-600');
+                        }, 5000);
+                    }
+                }
+
+                scrollAnimationId = requestAnimationFrame(animateScroll);
+            }
 
             const roles = [
                 { name: 'Backend-разработчик', desc: 'Строит "мозг" сайта — то, что работает на сервере.', categories: ['logic'] },
