@@ -49,7 +49,7 @@
                 <div class="flex-shrink-0 flex items-center">
                     <span class="text-xl font-bold text-indigo-600">Твой Старт в IT</span>
                 </div>
-                <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-2 sm:space-x-4">
                     <div class="hidden md:block">
                         <div class="flex items-baseline space-x-4">
                             <a href="#why" class="nav-link text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">Почему IT?</a>
@@ -58,7 +58,14 @@
                             <a href="#market" class="nav-link text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">Рынок</a>
                         </div>
                     </div>
-                    <button id="autoScrollButton" class="bg-indigo-500 text-white text-xs font-semibold py-2 px-4 rounded-full hover:bg-indigo-600 transition duration-300 shadow-md">
+
+                    <div id="scroll-controls" class="flex items-center space-x-1">
+                        <button id="durationDecrease" class="text-gray-500 text-lg font-bold w-6 h-6 rounded-full flex items-center justify-center hover:bg-gray-200 transition">-</button>
+                        <span id="durationDisplay" class="text-sm font-medium text-gray-700 w-10 text-center">4:00</span>
+                        <button id="durationIncrease" class="text-gray-500 text-lg font-bold w-6 h-6 rounded-full flex items-center justify-center hover:bg-gray-200 transition">+</button>
+                    </div>
+
+                    <button id="autoScrollButton" class="bg-indigo-500 text-white text-xs sm:text-sm font-semibold py-2 px-3 sm:px-4 rounded-full hover:bg-indigo-600 transition duration-300 shadow-md">
                         Запустить Авто-тур
                     </button>
                 </div>
@@ -69,12 +76,12 @@
     <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
 
         <section id="hero" class="text-center min-h-[60vh] flex flex-col justify-center items-center">
-            <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6">
+            <h1 class="text-3xl sm:text-4xl lg:text-6xl font-bold tracking-tight mb-6">
                 <span class="block">IT — это не сложно.</span>
                 <span class="block text-indigo-600 mt-2">Ваш первый шаг займет 30 минут.</span>
             </h1>
             <p class="max-w-2xl mx-auto text-lg md:text-xl text-gray-600 mb-10">
-                "Я тоже думал, что IT — это магия, требующая 5 лет диплома. Но мой первый шаг — одна простая задача — всё изменил. Я понял, что могу создавать, а не только потреблять. Если вы думаете, что это сложно или дорого — вы ошибаетесь." - Миша
+                "Я тоже думал, что IT — это магия, требующая 5 лет диплома. Но мой первый шаг — одна простая задача — всё изменил. Я понял, что могу создавать, а не только потреблять. Если вы думаете, что это сложно или дорого — вы ошибаетесь."
             </p>
             <a href="#why" class="nav-link bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-indigo-700 transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
                 Узнать, как
@@ -208,7 +215,71 @@
 
             const nav = document.getElementById('navbar');
             const autoScrollButton = document.getElementById('autoScrollButton');
+            const durationIncreaseButton = document.getElementById('durationIncrease');
+            const durationDecreaseButton = document.getElementById('durationDecrease');
+            const durationDisplay = document.getElementById('durationDisplay');
+
             let scrollAnimationId = null;
+            let scrollDuration = 240000;
+            const DURATION_STEP = 30000;
+            const MIN_DURATION = 60000;
+            const MAX_DURATION = 600000;
+
+            function msToTime(duration) {
+                const seconds = Math.floor((duration / 1000) % 60);
+                const minutes = Math.floor((duration / (1000 * 60)) % 60);
+
+                const mins = (minutes < 10) ? "0" + minutes : minutes;
+                const secs = (seconds < 10) ? "0" + seconds : seconds;
+
+                return mins + ":" + secs;
+            }
+
+            function updateDurationDisplay() {
+                durationDisplay.textContent = msToTime(scrollDuration);
+                durationDecreaseButton.disabled = scrollDuration <= MIN_DURATION;
+                durationIncreaseButton.disabled = scrollDuration >= MAX_DURATION;
+
+                durationDecreaseButton.classList.toggle('opacity-50', scrollDuration <= MIN_DURATION);
+                durationIncreaseButton.classList.toggle('opacity-50', scrollDuration >= MAX_DURATION);
+            }
+
+            function updateAutoScrollButtonText(state) {
+                const isMobile = window.innerWidth < 640;
+
+                autoScrollButton.classList.remove('bg-indigo-500', 'hover:bg-indigo-600', 'bg-red-500', 'hover:bg-red-600', 'bg-gray-400', 'cursor-not-allowed');
+
+                if (state === 'start') {
+                    autoScrollButton.innerHTML = 'Запустить Авто-тур';
+                    autoScrollButton.classList.add('bg-indigo-500', 'hover:bg-indigo-600');
+                } else if (state === 'stop') {
+                    autoScrollButton.innerHTML = isMobile ? 'Остановить' : 'Остановить Авто-тур';
+                    autoScrollButton.classList.add('bg-red-500', 'hover:bg-red-600');
+                } else if (state === 'finished') {
+                    autoScrollButton.innerHTML = 'Авто-тур завершен';
+                    autoScrollButton.classList.add('bg-gray-400', 'cursor-not-allowed');
+                }
+
+                durationDecreaseButton.disabled = state !== 'start';
+                durationIncreaseButton.disabled = state !== 'start';
+                durationIncreaseButton.parentElement.classList.toggle('opacity-50', state !== 'start');
+            }
+
+            updateDurationDisplay();
+
+            durationIncreaseButton.addEventListener('click', () => {
+                if (scrollDuration < MAX_DURATION) {
+                    scrollDuration += DURATION_STEP;
+                    updateDurationDisplay();
+                }
+            });
+
+            durationDecreaseButton.addEventListener('click', () => {
+                if (scrollDuration > MIN_DURATION) {
+                    scrollDuration -= DURATION_STEP;
+                    updateDurationDisplay();
+                }
+            });
 
             document.querySelectorAll('a.nav-link').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
@@ -217,9 +288,8 @@
                     if (scrollAnimationId) {
                         cancelAnimationFrame(scrollAnimationId);
                         scrollAnimationId = null;
-                        autoScrollButton.textContent = 'Запустить Авто-тур (4 мин)';
-                        autoScrollButton.classList.remove('bg-red-500', 'hover:bg-red-600');
-                        autoScrollButton.classList.add('bg-indigo-500', 'hover:bg-indigo-600');
+                        updateAutoScrollButtonText('start');
+                        updateDurationDisplay();
                     }
 
                     const targetId = this.getAttribute('href');
@@ -241,33 +311,27 @@
                 }
             });
 
-
             autoScrollButton.addEventListener('click', () => {
                 if (scrollAnimationId) {
                     cancelAnimationFrame(scrollAnimationId);
                     scrollAnimationId = null;
-                    autoScrollButton.textContent = 'Запустить Авто-тур (4 мин)';
-                    autoScrollButton.classList.remove('bg-red-500', 'hover:bg-red-600');
-                    autoScrollButton.classList.add('bg-indigo-500', 'hover:bg-indigo-600');
+                    updateAutoScrollButtonText('start');
+                    updateDurationDisplay();
                 } else {
                     startAutoScroll();
-                    autoScrollButton.textContent = 'Остановить Авто-тур';
-                    autoScrollButton.classList.remove('bg-indigo-500', 'hover:bg-indigo-600');
-                    autoScrollButton.classList.add('bg-red-500', 'hover:bg-red-600');
+                    updateAutoScrollButtonText('stop');
                 }
             });
 
             function startAutoScroll() {
-                const DURATION = 240000;
                 const startPosition = window.scrollY;
                 const targetPosition = document.documentElement.scrollHeight - window.innerHeight;
                 const distance = targetPosition - startPosition;
                 let startTime = null;
 
                 if (distance <= 0) {
-                    autoScrollButton.textContent = 'Запустить Авто-тур (4 мин)';
-                    autoScrollButton.classList.remove('bg-red-500', 'hover:bg-red-600');
-                    autoScrollButton.classList.add('bg-indigo-500', 'hover:bg-indigo-600');
+                    updateAutoScrollButtonText('start');
+                    updateDurationDisplay();
                     return;
                 }
 
@@ -275,7 +339,7 @@
                     if (startTime === null) startTime = currentTime;
 
                     const timeElapsed = currentTime - startTime;
-                    const progress = Math.min(timeElapsed / DURATION, 1); // Прогресс от 0 до 1
+                    const progress = Math.min(timeElapsed / scrollDuration, 1);
 
                     const newScrollY = startPosition + distance * progress;
 
@@ -285,13 +349,11 @@
                         scrollAnimationId = requestAnimationFrame(animateScroll);
                     } else {
                         scrollAnimationId = null;
-                        autoScrollButton.textContent = 'Авто-тур завершен';
-                        autoScrollButton.classList.remove('bg-red-500', 'hover:bg-red-600');
-                        autoScrollButton.classList.add('bg-gray-400', 'cursor-not-allowed');
+                        updateAutoScrollButtonText('finished');
+
                         setTimeout(() => {
-                           autoScrollButton.textContent = 'Запустить Авто-тур (4 мин)';
-                           autoScrollButton.classList.remove('bg-gray-400', 'cursor-not-allowed');
-                           autoScrollButton.classList.add('bg-indigo-500', 'hover:bg-indigo-600');
+                           updateAutoScrollButtonText('start');
+                           updateDurationDisplay();
                         }, 5000);
                     }
                 }
@@ -317,9 +379,6 @@
 
             function renderRoles(filter = 'all') {
                 grid.innerHTML = '';
-                const filteredRoles = (filter === 'all')
-                    ? roles
-                    : roles.filter(role => role.categories.includes(filter));
 
                 roles.forEach(role => {
                     const isVisible = (filter === 'all') || role.categories.includes(filter);
@@ -367,8 +426,8 @@
                         label: 'Количество (в миллионах)',
                         data: [180, 121],
                         backgroundColor: [
-                            'rgba(79, 70, 229, 0.8)', // indigo-600
-                            'rgba(165, 180, 252, 0.8)' // indigo-300
+                            'rgba(79, 70, 229, 0.8)',
+                            'rgba(165, 180, 252, 0.8)'
                         ],
                         borderColor: [
                             'rgba(79, 70, 229, 1)',
