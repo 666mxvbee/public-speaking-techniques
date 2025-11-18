@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Как начать карьеру в IT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .role-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+        }
+        .role-card.hidden {
+            opacity: 0;
+            transform: scale(0.95);
+            pointer-events: none;
+            height: 0;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 leading-relaxed">
+
+    <nav id="navbar" class="bg-white/70 backdrop-blur-lg sticky top-0 z-50 w-full transition-shadow duration-300">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0 flex items-center">
+                    <span class="text-xl font-bold text-indigo-600">Твой Старт в IT</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#why" class="nav-link text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">Почему IT?</a>
+                        <a href="#roles" class="nav-link text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">Найди себя</a>
+                        <a href="#steps" class="nav-link text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">Первые шаги</a>
+                        <a href="#market" class="nav-link text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">Рынок</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+
+        <section id="hero" class="text-center min-h-[60vh] flex flex-col justify-center items-center">
+            <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6">
+                <span class="block">IT — это не сложно.</span>
+                <span class="block text-indigo-600 mt-2">Ваш первый шаг займет 30 минут.</span>
+            </h1>
+            <p class="max-w-2xl mx-auto text-lg md:text-xl text-gray-600 mb-10">
+                "Я тоже думал, что IT — это магия, требующая 5 лет диплома. Но мой первый шаг — одна простая задача — всё изменил. Я понял, что могу создавать, а не только потреблять. Если вы думаете, что это сложно или дорого — вы ошибаетесь." - Миша
+            </p>
+            <a href="#why" class="nav-link bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-indigo-700 transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                Узнать, как
+            </a>
+        </section>
+
+        <section id="why" class="py-16 md:py-24">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Почему IT? Три главных "ДА"</h2>
+                <p class="text-lg text-gray-600">
+                    Вы все еще сомневаетесь, стоит ли? IT — это не просто "работа". Это три ключевых преимущества: доступность, востребованность и невероятное разнообразие.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-xl shadow-lg transition-transform transform hover:scale-105">
+                    <h3 class="text-2xl font-bold mb-3 text-indigo-600">Это доступно (и бесплатно!)</h3>
+                    <p class="text-gray-600 mb-4">
+                        Забудьте о дорогих курсах. Все, что нужно для старта, уже есть в сети бесплатно. Ваш первый 30-минутный шаг можно сделать прямо сейчас.
+                    </p>
+                    <ul class="space-y-2 text-left">
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Stepik (мой личный старт!)</li>
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Coursera (курсы от вузов)</li>
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> LeetCode / CodeWars (тренажеры)</li>
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> GitHub (шаблоны проектов)</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-lg transition-transform transform hover:scale-105">
+                    <h3 class="text-2xl font-bold mb-3 text-indigo-600">Это для всех (не только "технарей")</h3>
+                    <p class="text-gray-600 mb-4">
+                        Самый большой миф — "нужно быть математиком". IT — это командный спорт, где нужны и гуманитарии, и творческие люди.
+                    </p>
+                    <p class="text-gray-600 font-semibold">Найдите свою роль в следующем разделе!</p>
+                    <a href="#roles" class="nav-link mt-4 inline-block text-indigo-600 font-semibold hover:underline">Перейти к ролям &rarr;</a>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-lg transition-transform transform hover:scale-105">
+                    <h3 class="text-2xl font-bold mb-3 text-indigo-600">Это востребовано</h3>
+                    <p class="text-gray-600 mb-4">
+                        Рынок растет с невероятной скоростью. Компании готовы обучать новичков, потому что спрос на талантливых людей огромен.
+                    </p>
+                    <p class="text-gray-600 font-semibold">Цифры не врут. Посмотрите сами.</p>
+                    <a href="#market" class="nav-link mt-4 inline-block text-indigo-600 font-semibold hover:underline">Смотреть статистику &rarr;</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="roles" class="py-16 md:py-24 bg-white rounded-2xl shadow-xl overflow-hidden">
+            <div class="text-center max-w-3xl mx-auto mb-12 px-4">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Найди себя: IT — это не только код</h2>
+                <p class="text-lg text-gray-600">
+                    Самый большой миф об IT: "нужно быть математиком". Это неправда. IT — это командный спорт, и здесь нужны разные таланты. Выберите, что вам ближе, чтобы увидеть подходящие роли.
+                </p>
+            </div>
+
+            <div id="role-filters" class="flex flex-wrap justify-center gap-3 mb-10 px-4">
+                <button data-filter="all" class="filter-btn bg-indigo-600 text-white py-2 px-5 rounded-full font-semibold shadow-md transition-transform transform hover:scale-105">Все роли</button>
+                <button data-filter="logic" class="filter-btn bg-gray-200 text-gray-800 py-2 px-5 rounded-full font-semibold shadow-sm transition-transform transform hover:scale-105 hover:bg-gray-300">Люблю логику</button>
+                <button data-filter="visual" class="filter-btn bg-gray-200 text-gray-800 py-2 px-5 rounded-full font-semibold shadow-sm transition-transform transform hover:scale-105 hover:bg-gray-300">Люблю визуал</button>
+                <button data-filter="people" class="filter-btn bg-gray-200 text-gray-800 py-2 px-5 rounded-full font-semibold shadow-sm transition-transform transform hover:scale-105 hover:bg-gray-300">Люблю общаться</button>
+                <button data-filter="order" class="filter-btn bg-gray-200 text-gray-800 py-2 px-5 rounded-full font-semibold shadow-sm transition-transform transform hover:scale-105 hover:bg-gray-300">Люблю порядок</button>
+            </div>
+
+            <div id="role-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
+            </div>
+        </section>
+
+        <section id="steps" class="py-16 md:py-24">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Ваш план на 30 дней</h2>
+                <p class="text-lg text-gray-600">
+                    Самый сложный шаг — первый. Мы разбили его на простой план. Вам не нужно бросать все — вам нужно 30 минут сегодня.
+                </p>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8 md:gap-4">
+                <div class="flex-1 text-center p-6 bg-white rounded-xl shadow-lg">
+                    <div class="text-3xl font-bold text-indigo-600 mb-2">Шаг 1: Сегодня</div>
+                    <p class="text-lg font-semibold">Решить 1 простое задание</p>
+                    <p class="text-gray-600">(~30 минут)</p>
+                </div>
+
+                <div class="text-2xl text-gray-400 hidden md:block">&rarr;</div>
+
+                <div class="flex-1 text-center p-6 bg-white rounded-xl shadow-lg">
+                    <div class="text-3xl font-bold text-indigo-600 mb-2">Шаг 2: За неделю</div>
+                    <p class="text-lg font-semibold">Сделать 3 мини-работы</p>
+                    <p class="text-gray-600">(в портфолио)</p>
+                </div>
+
+                <div class="text-2xl text-gray-400 hidden md:block">&rarr;</div>
+
+                <div class="flex-1 text-center p-6 bg-white rounded-xl shadow-lg">
+                    <div class="text-3xl font-bold text-indigo-600 mb-2">Шаг 3: За месяц</div>
+                    <p class="text-lg font-semibold">Написать 1 пет-проект</p>
+                    <p class="text-gray-600">(простой калькулятор)</p>
+                </div>
+            </div>
+
+            <div class="text-center mt-12">
+                <p class="text-xl text-gray-700 mb-8">Через месяц у вас будет то, чего нет у 90% "хочущих" — **осязаемое, завершенное дело**.</p>
+                <a href="https://stepik.org/" target="_blank" rel="noopener noreferrer" class="bg-indigo-600 text-white font-bold py-4 px-10 rounded-lg text-xl hover:bg-indigo-700 transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                    Начать сейчас (на Stepik)
+                </a>
+            </div>
+        </section>
+
+        <section id="market" class="py-16 md:py-24 bg-gray-100 rounded-2xl">
+            <div class="text-center max-w-3xl mx-auto mb-12 px-4">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Доказательство: Рынок в цифрах</h2>
+                <p class="text-lg text-gray-600">
+                    Это не просто слова. Рынок IT продолжает расти с невероятной скоростью. Вот сухие цифры, доказывающие, что специалисты нужны.
+                </p>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="marketChart"></canvas>
+            </div>
+            <p class="text-center text-sm text-gray-500 mt-4">Данные по GitHub за 2024-2025 гг.</p>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-10 border-t border-gray-200">
+        <p class="text-lg text-gray-700">Забудьте о страхе. Забудьте о "сложно".</p>
+        <p class="text-2xl font-bold text-indigo-600 mt-2">Ваша карьера в IT начинается с 30 минут сегодня.</p>
+        <p class="text-gray-500 mt-4">Спасибо! Я пришлю вам чек-лист "Первый месяц в IT" и карту направлений.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            document.querySelectorAll('a.nav-link').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            const nav = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 10) {
+                    nav.classList.add('shadow-lg');
+                } else {
+                    nav.classList.remove('shadow-lg');
+                }
+            });
+
+            const roles = [
+                { name: 'Backend-разработчик', desc: 'Строит "мозг" сайта — то, что работает на сервере.', categories: ['logic'] },
+                { name: 'Frontend-разработчик', desc: 'Создает видимую часть сайта, с которой вы взаимодействуете.', categories: ['logic', 'visual'] },
+                { name: 'QA-инженер (Тестировщик)', desc: 'Ищет ошибки и следит, чтобы все работало как задумано.', categories: ['order', 'people'] },
+                { name: 'UI/UX Дизайнер', desc: 'Проектирует удобные и красивые интерфейсы.', categories: ['visual', 'people'] },
+                { name: 'Data Scientist', desc: 'Анализирует большие данные и строит модели (ИИ).', categories: ['logic', 'order'] },
+                { name: 'DevOps-инженер', desc: 'Автоматизирует развертывание и поддержку приложений.', categories: ['logic', 'order'] },
+                { name: 'Product Manager', desc: 'Отвечает за продукт, общается с командой и клиентами.', categories: ['people', 'order'] },
+                { name: 'Project Manager', desc: 'Управляет сроками, задачами и командой.', categories: ['people', 'order'] },
+                { name: 'Технический писатель', desc: 'Пишет понятную документацию и гайды.', categories: ['people', 'order'] }
+            ];
+
+            const grid = document.getElementById('role-grid');
+            const filters = document.getElementById('role-filters');
+            const filterBtns = filters.querySelectorAll('.filter-btn');
+
+            function renderRoles(filter = 'all') {
+                grid.innerHTML = '';
+                const filteredRoles = (filter === 'all')
+                    ? roles
+                    : roles.filter(role => role.categories.includes(filter));
+
+                roles.forEach(role => {
+                    const isVisible = (filter === 'all') || role.categories.includes(filter);
+                    const card = document.createElement('div');
+                    card.className = `role-card bg-gray-50 border border-gray-200 p-6 rounded-lg shadow-sm transition-all duration-300 ${isVisible ? '' : 'hidden'}`;
+                    card.setAttribute('data-categories', role.categories.join(' '));
+                    card.innerHTML = `
+                        <h4 class="text-xl font-bold text-indigo-700 mb-2">${role.name}</h4>
+                        <p class="text-gray-700">${role.desc}</p>
+                    `;
+                    grid.appendChild(card);
+                });
+            }
+
+            filters.addEventListener('click', (e) => {
+                if (e.target.classList.contains('filter-btn')) {
+                    const filter = e.target.dataset.filter;
+
+                    filterBtns.forEach(btn => {
+                        btn.classList.remove('bg-indigo-600', 'text-white');
+                        btn.classList.add('bg-gray-200', 'text-gray-800');
+                    });
+
+                    e.target.classList.add('bg-indigo-600', 'text-white');
+                    e.target.classList.remove('bg-gray-200', 'text-gray-800');
+
+                    const cards = grid.querySelectorAll('.role-card');
+                    cards.forEach(card => {
+                        const categories = card.dataset.categories.split(' ');
+                        if (filter === 'all' || categories.includes(filter)) {
+                            card.classList.remove('hidden');
+                        } else {
+                            card.classList.add('hidden');
+                        }
+                    });
+                }
+            });
+
+            const ctx = document.getElementById('marketChart').getContext('2d');
+            const marketChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Разработчиков на GitHub (Прогноз 2025)', 'Новых репозиториев (за год)'],
+                    datasets: [{
+                        label: 'Количество (в миллионах)',
+                        data: [180, 121],
+                        backgroundColor: [
+                            'rgba(79, 70, 229, 0.8)', // indigo-600
+                            'rgba(165, 180, 252, 0.8)' // indigo-300
+                        ],
+                        borderColor: [
+                            'rgba(79, 70, 229, 1)',
+                            'rgba(165, 180, 252, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.parsed.y} млн.`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Миллионы'
+                            }
+                        }
+                    }
+                }
+            });
+
+            renderRoles();
+
+        });
+    </script>
+</body>
+</html>
